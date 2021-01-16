@@ -107,8 +107,8 @@ namespace Console_ListOfObjects
                 Console.WriteLine();
                 VideoGame videogame = new VideoGame();
                 Console.Write("\tName: ");
-                videogame.Name = Console.ReadLine();
-                //Validate Rating
+                videogame.Name = MaxLength(Console.ReadLine(), 30);
+                // Validate Rating
                 do
                 {
                     Console.Write("\tRating (1-10): ");
@@ -123,7 +123,7 @@ namespace Console_ListOfObjects
                     }
                     else Console.WriteLine("\tEnter valid entry");              
                 } while (!validResponse);
-                //Validate released
+                // Validate released
                 validResponse = false;
                 do
                 {
@@ -135,12 +135,15 @@ namespace Console_ListOfObjects
                     }
                     else Console.WriteLine("\tEnter valid entry");
                 } while (!validResponse);
-                //Validate console
+                // Validate console
                 validResponse = false;
                 do
                 {
                     Console.Write("\tConsole? (Playstation/Xbox/Nintendo): ");
-                    if (Enum.TryParse(Console.ReadLine(), out VideoGame.Console system))
+
+                    // TODO - Why does this allow number inputs?
+
+                    if (Enum.TryParse<VideoGame.Console>(Console.ReadLine(), out VideoGame.Console system))
                     {
                         videogame.System = system;
                         validResponse = true;
@@ -209,7 +212,7 @@ namespace Console_ListOfObjects
                 countSum += videogame.Rating;
             }
             Console.WriteLine("\t".PadRight(55) + "----");
-            Console.WriteLine("\t(Average rating)".PadRight(56) + (countSum / countTotal));
+            if (countTotal > 0) Console.WriteLine("\t(Average rating)".PadRight(56) + (countSum / countTotal));
         }
         private static void DisplayGameDetail(VideoGame videogame)
         {
@@ -423,6 +426,18 @@ namespace Console_ListOfObjects
             Console.WriteLine("\tPress any key to continue.");
             Console.ReadKey();
         }
+        private static string MaxLength(string value, int maxLength)
+        {
+
+            // Truncates string to specified max length
+
+            if (value == null)
+            {
+                return null;
+            }
+
+            return value.Substring(0, Math.Min(value.Length, maxLength));
+        }
         private static void SetTheme(ConsoleColor background, ConsoleColor foreground)
         {
 
@@ -434,5 +449,6 @@ namespace Console_ListOfObjects
             Console.Clear();
 
         }
+
     }
 }
